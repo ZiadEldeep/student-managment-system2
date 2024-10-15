@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Add Student Data</title>
+    <title>Admin - Manage Student Data</title>
     <style>
         body {
             margin: 0;
@@ -16,30 +17,38 @@
             height: 100vh;
             transition: background-color 0.3s ease;
         }
+
         h2 {
             font-size: 28px;
             margin-bottom: 20px;
         }
+
         .form-container {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
+            margin-bottom: 20px;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
         }
-        .form-group input, .form-group select {
+
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 8px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         .form-group textarea {
             width: 100%;
             height: 100px;
@@ -47,6 +56,7 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         .form-group button {
             background-color: #1e90ff;
             color: white;
@@ -56,19 +66,69 @@
             cursor: pointer;
             width: 100%;
         }
+
         .form-group button:hover {
             background-color: #1c86ee;
         }
+
         .success-message {
             color: green;
             margin-top: 20px;
         }
+
+        /* User Management Styles */
+        .user-management {
+            margin-top: 30px;
+            width: 80%;
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-management table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-management th,
+        .user-management td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .user-management th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .action-buttons button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .action-buttons button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
-<body>
 
+<body>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
     <div class="form-container">
-        <h2>Add Student Data</h2>
+        <h2>Add/Edit Student Data</h2>
         <form id="addStudentForm">
             <!-- Student Name -->
             <div class="form-group">
@@ -120,19 +180,60 @@
 
         <!-- Success Message -->
         <div id="successMessage" class="success-message" style="display: none;">
-            Student data has been added successfully!
+            Student data has been added/updated successfully!
         </div>
     </div>
 
+    <!-- User Management Section -->
+    <div class="user-management">
+        <h2>Manage Student Data</h2>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Subject</th>
+                    <th>Grade</th>
+                    <th>Term</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John Doe</td>
+                    <td>Math</td>
+                    <td>A</td>
+                    <td>2024</td>
+                    <td class="action-buttons">
+                        <button onclick="editStudent(this)">Edit</button>
+                        <button onclick="deleteStudent(this)">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jane Smith</td>
+                    <td>Science</td>
+                    <td>B+</td>
+                    <td>2024</td>
+                    <td class="action-buttons">
+                        <button onclick="editStudent(this)">Edit</button>
+                        <button onclick="deleteStudent(this)">Delete</button>
+                    </td>
+                </tr>
+                <!-- Additional dummy data can be added here -->
+            </tbody>
+        </table>
+    </div>
+
     <script>
-        // Handle form submission
         const form = document.getElementById('addStudentForm');
         const successMessage = document.getElementById('successMessage');
+        const userTableBody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+        let editingRow = null; // Variable to keep track of the row being edited
 
-        form.addEventListener('submit', function(event) {
+        // Handle form submission
+        form.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
 
-            // Simulate data submission (e.g., you can use AJAX here)
+            // Get form data
             const studentData = {
                 studentName: form.studentName.value,
                 subject: form.subject.value,
@@ -141,15 +242,55 @@
                 notes: form.notes.value
             };
 
-            console.log('Student Data:', studentData);
+            if (editingRow) {
+                // Update the existing row
+                editingRow.cells[0].innerText = studentData.studentName;
+                editingRow.cells[1].innerText = studentData.subject;
+                editingRow.cells[2].innerText = studentData.grade;
+                editingRow.cells[3].innerText = studentData.term;
+                editingRow = null; // Clear editing row after update
+            } else {
+                // Add new student data to the table
+                const newRow = userTableBody.insertRow();
+                newRow.innerHTML = `
+                    <td>${studentData.studentName}</td>
+                    <td>${studentData.subject}</td>
+                    <td>${studentData.grade}</td>
+                    <td>${studentData.term}</td>
+                    <td class="action-buttons">
+                        <button onclick="editStudent(this)">Edit</button>
+                        <button onclick="deleteStudent(this)">Delete</button>
+                    </td>
+                `;
+            }
 
-            // Simulate a successful submission
+            // Show success message
             successMessage.style.display = 'block';
 
             // Reset the form
             form.reset();
         });
+
+        // Edit student function
+        function editStudent(button) {
+            const row = button.parentElement.parentElement;
+            const cells = row.getElementsByTagName('td');
+            form.studentName.value = cells[0].innerText;
+            form.subject.value = cells[1].innerText;
+            form.grade.value = cells[2].innerText;
+            form.term.value = cells[3].innerText;
+
+            // Set the editing row
+            editingRow = row;
+        }
+
+        // Delete student function
+        function deleteStudent(button) {
+            const row = button.parentElement.parentElement;
+            userTableBody.deleteRow(row.rowIndex - 1);
+        }
     </script>
 
 </body>
+
 </html>
