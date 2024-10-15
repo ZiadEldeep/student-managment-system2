@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student Result Management System</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            transition: background-color 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #1c1c1c;
+            color: #ccc;
+        }
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #1e90ff;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar.dark-mode {
+            background-color: #333;
+        }
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px 0;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #1c86ee;
+        }
+        .sidebar.dark-mode a {
+            color: #ccc;
+        }
+        .sidebar.dark-mode a:hover {
+            background-color: #444;
+        }
+        .logout-btn {
+            background-color: #ff4c4c;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .main-content h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .result-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .result-summary div {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .main-content.dark-mode .result-summary div {
+            background-color: #333;
+            color: #ccc;
+        }
+        .results-section {
+            margin-top: 30px;
+        }
+        .result-card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .main-content.dark-mode .result-card {
+            background-color: #333;
+            color: #ccc;
+        }
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        .filter-section label {
+            margin-right: 10px;
+        }
+        .filter-section select {
+            padding: 5px;
+        }
+        /* Dark mode button */
+        .dark-mode-toggle {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .dark-mode-toggle:hover {
+            background-color: #555;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .result-summary {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .result-summary div {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div>
+            <h2>Student Dashboard</h2>
+            <a href="#">Home</a>
+            <a href="#">View Results</a>
+            <a href="#">Profile</a>
+        </div>
+        <div>
+            <button id="darkModeToggle" class="dark-mode-toggle">Enable Dark Mode</button>
+            <a href="login.html" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2>Welcome, [Student Name]</h2>
+
+        <!-- Result Summary -->
+        <div class="result-summary">
+            <div>
+                <h3>Total Subjects</h3>
+                <p>6</p>
+            </div>
+            <div>
+                <h3>Average Grade</h3>
+                <p>B+</p>
+            </div>
+            <div>
+                <h3>Performance</h3>
+                <p>Above Average</p>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <label for="subject-filter">Filter by Subject:</label>
+            <select id="subject-filter">
+                <option value="all">All</option>
+                <option value="math">Math</option>
+                <option value="science">Science</option>
+                <option value="english">English</option>
+            </select>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <div class="result-card">
+                <h4>Math</h4>
+                <p>Grade: A</p>
+                <p>Term: 2024</p>
+            </div>
+            <div class="result-card">
+                <h4>Science</h4>
+                <p>Grade: B+</p>
+                <p>Term: 2024</p>
+            </div>
+            <div class="result-card">
+                <h4>English</h4>
+                <p>Grade: B</p>
+                <p>Term: 2024</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Dark Mode
+        const toggleButton = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        toggleButton.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            sidebar.classList.toggle('dark-mode');
+            mainContent.classList.toggle('dark-mode');
+
+            // Update button text
+            if (body.classList.contains('dark-mode')) {
+                toggleButton.textContent = 'Disable Dark Mode';
+            } else {
+                toggleButton.textContent = 'Enable Dark Mode';
+            }
+        });
+
+        // Add functionality to the filter
+        document.getElementById('subject-filter').addEventListener('change', function() {
+            const filterValue = this.value;
+            const resultCards = document.querySelectorAll('.result-card');
+
+            resultCards.forEach(card => {
+                const subject = card.querySelector('h4').innerText.toLowerCase();
+                if (filterValue === 'all' || subject.includes(filterValue)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
