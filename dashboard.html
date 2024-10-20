@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +13,12 @@
             display: flex;
             transition: background-color 0.3s ease;
         }
+
         body.dark-mode {
             background-color: #1c1c1c;
             color: #ccc;
         }
+
         /* Sidebar Styles */
         .sidebar {
             width: 250px;
@@ -28,13 +31,16 @@
             justify-content: space-between;
             transition: background-color 0.3s ease;
         }
+
         .sidebar.dark-mode {
             background-color: #333;
         }
+
         .sidebar h2 {
             font-size: 24px;
             margin-bottom: 30px;
         }
+
         .sidebar a {
             text-decoration: none;
             color: white;
@@ -42,36 +48,45 @@
             padding: 10px 0;
             transition: background-color 0.3s ease;
         }
+
         .sidebar a:hover {
             background-color: #1c86ee;
         }
+
         .sidebar.dark-mode a {
             color: #ccc;
         }
+
         .sidebar.dark-mode a:hover {
             background-color: #444;
         }
+
         .logout-btn {
             background-color: #ff4c4c;
             text-align: center;
             padding: 10px;
             border-radius: 5px;
         }
+
         /* Main Content */
         .main-content {
             flex: 1;
             padding: 20px;
             transition: background-color 0.3s ease;
+            overflow-y: auto;
         }
+
         .main-content h2 {
             font-size: 28px;
             margin-bottom: 20px;
         }
+
         .result-summary {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
         }
+
         .result-summary div {
             background-color: #fff;
             padding: 20px;
@@ -81,13 +96,16 @@
             text-align: center;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
         .main-content.dark-mode .result-summary div {
             background-color: #333;
             color: #ccc;
         }
+
         .results-section {
             margin-top: 30px;
         }
+
         .result-card {
             background-color: white;
             padding: 20px;
@@ -96,19 +114,25 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
         .main-content.dark-mode .result-card {
             background-color: #333;
             color: #ccc;
         }
+
         .filter-section {
             margin-bottom: 20px;
         }
+
         .filter-section label {
             margin-right: 10px;
         }
+
         .filter-section select {
             padding: 5px;
+            margin-right: 10px;
         }
+
         /* Dark mode button */
         .dark-mode-toggle {
             background-color: #444;
@@ -119,29 +143,63 @@
             cursor: pointer;
             margin-bottom: 20px;
         }
+
         .dark-mode-toggle:hover {
             background-color: #555;
         }
+
+        /* Student Form */
+        .student-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .student-form input,
+        .student-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .student-form button {
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .student-form button:hover {
+            background-color: #1c86ee;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .result-summary {
                 flex-direction: column;
                 gap: 20px;
             }
+
             .result-summary div {
                 width: 100%;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
         <div>
             <h2>Student Dashboard</h2>
-            <a href="#">Home</a>
-            <a href="#">View Results</a>
-            <a href="#">Profile</a>
+            <a href="index.html">Home</a>
+            <a href="results.html">View Results</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="about.html">About Us</a>
         </div>
         <div>
             <button id="darkModeToggle" class="dark-mode-toggle">Enable Dark Mode</button>
@@ -151,89 +209,248 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <h2>Welcome, [Student Name]</h2>
+        <h2 id="student-name">Welcome, [Student Name]</h2>
 
-        <!-- Result Summary -->
-        <div class="result-summary">
-            <div>
-                <h3>Total Subjects</h3>
-                <p>6</p>
-            </div>
-            <div>
-                <h3>Average Grade</h3>
-                <p>B+</p>
-            </div>
-            <div>
-                <h3>Performance</h3>
-                <p>Above Average</p>
-            </div>
-        </div>
-
-        <!-- Filter Section -->
+        <!-- Filter Section (Student Selector) -->
         <div class="filter-section">
-            <label for="subject-filter">Filter by Subject:</label>
-            <select id="subject-filter">
-                <option value="all">All</option>
-                <option value="math">Math</option>
-                <option value="science">Science</option>
-                <option value="english">English</option>
+            <label for="student-select">Select Student:</label>
+            <select id="student-select">
+                <option value="" disabled selected>Select a student</option>
+                <!-- Student options dynamically populated -->
             </select>
         </div>
 
-        <!-- Results Section -->
-        <div class="results-section">
-            <div class="result-card">
-                <h4>Math</h4>
-                <p>Grade: A</p>
-                <p>Term: 2024</p>
-            </div>
-            <div class="result-card">
-                <h4>Science</h4>
-                <p>Grade: B+</p>
-                <p>Term: 2024</p>
-            </div>
-            <div class="result-card">
-                <h4>English</h4>
-                <p>Grade: B</p>
-                <p>Term: 2024</p>
-            </div>
+        <!-- Result Summary -->
+        <div class="result-summary" id="result-summary">
+            <!-- These will be filled dynamically -->
         </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="results-section">
+            <!-- These will be filled dynamically -->
+        </div>
+
+        <!-- Add/Edit Student Form -->
+        <h3>Add/Edit Student</h3>
+        <form id="studentForm" class="student-form">
+            <input type="hidden" id="studentId" value="">
+            <label for="studentName">Name:</label>
+            <input type="text" id="studentName" required>
+            <div id="subject-container">
+                <div class="subject-entry">
+                    <label for="subject">Subject:</label>
+                    <input type="text" class="subject" required>
+                    <label for="grade">Grade:</label>
+                    <input type="text" class="grade" required>
+                    <button type="button" class="remove-subject" onclick="removeSubject(this)">Remove Subject</button>
+                </div>
+            </div>
+            <button type="button" onclick="addSubject()">Add Another Subject</button>
+            <button type="submit">Add Student</button>
+        </form>
+
+        <!-- Student List -->
+        <h3>Student List</h3>
+        <div class="filter-section">
+            <label for="search">Search:</label>
+            <input type="text" id="search" placeholder="Search by name" oninput="filterStudents()">
+        </div>
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Subjects</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Student data will be dynamically added here -->
+            </tbody>
+        </table>
     </div>
 
-    <script>
-        // Toggle Dark Mode
-        const toggleButton = document.getElementById('darkModeToggle');
-        const body = document.body;
-        const sidebar = document.querySelector('.sidebar');
-        const mainContent = document.querySelector('.main-content');
-
-        toggleButton.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            sidebar.classList.toggle('dark-mode');
-            mainContent.classList.toggle('dark-mode');
-
-            // Update button text
-            if (body.classList.contains('dark-mode')) {
-                toggleButton.textContent = 'Disable Dark Mode';
-            } else {
-                toggleButton.textContent = 'Enable Dark Mode';
+    <script>const students = JSON.parse(localStorage.getItem('students')) || {};
+        let editingRow = null;
+        
+        // Populate student options in the select dropdown
+        const studentSelect = document.getElementById('student-select');
+        const studentTableBody = document.querySelector('#studentTable tbody');
+        
+        function saveStudentsToLocalStorage() {
+            localStorage.setItem('students', JSON.stringify(students));
+        }
+        
+        function refreshStudentSelect() {
+            studentSelect.innerHTML = '<option value="" disabled selected>Select a student</option>';
+            Object.keys(students).forEach(id => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.text = students[id].name;
+                studentSelect.appendChild(option);
+            });
+        }
+        
+        function refreshStudentTable() {
+            studentTableBody.innerHTML = '';
+            Object.keys(students).forEach(id => {
+                const student = students[id];
+                const subjectsList = student.results.map(res => res.subject).join(', ');
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${subjectsList || 'N/A'}</td>
+                    <td>
+                        <button onclick="editStudent(${id})">Edit</button>
+                        <button onclick="deleteStudent(${id})">Delete</button>
+                    </td>
+                `;
+                studentTableBody.appendChild(row);
+            });
+        }
+        
+        // Handle student selection
+        studentSelect.addEventListener('change', function () {
+            const studentId = this.value;
+            if (students[studentId]) {
+                const student = students[studentId];
+                document.getElementById('student-name').textContent = `Welcome, ${student.name}`;
+                displayResults(studentId);
             }
         });
-
-        // Add functionality to the filter
-        document.getElementById('subject-filter').addEventListener('change', function() {
-            const filterValue = this.value;
-            const resultCards = document.querySelectorAll('.result-card');
-
-            resultCards.forEach(card => {
-                const subject = card.querySelector('h4').innerText.toLowerCase();
-                if (filterValue === 'all' || subject.includes(filterValue)) {
-                    card.style.display = 'block';
+        
+        function displayResults(studentId) {
+            const student = students[studentId];
+            const resultSummary = document.getElementById('result-summary');
+            resultSummary.innerHTML = '';
+            student.results.forEach(result => {
+                const summaryDiv = document.createElement('div');
+                summaryDiv.innerHTML = `<strong>${result.subject}:</strong> ${result.grade}`;
+                resultSummary.appendChild(summaryDiv);
+            });
+        }
+        
+        // Add another subject
+        function addSubject() {
+            const subjectContainer = document.getElementById('subject-container');
+            const subjectEntry = document.createElement('div');
+            subjectEntry.classList.add('subject-entry');
+            subjectEntry.innerHTML = `
+                <label for="subject">Subject:</label>
+                <input type="text" class="subject" required>
+                <label for="grade">Grade:</label>
+                <input type="text" class="grade" required>
+                <button type="button" class="remove-subject" onclick="removeSubject(this)">Remove Subject</button>
+            `;
+            subjectContainer.appendChild(subjectEntry);
+        }
+        
+        // Remove subject entry
+        function removeSubject(button) {
+            button.parentElement.remove();
+        }
+        
+        // Handle form submission
+        const studentForm = document.getElementById('studentForm');
+        studentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const id = document.getElementById('studentId').value;
+            const name = document.getElementById('studentName').value;
+            const results = [];
+        
+            document.querySelectorAll('.subject-entry').forEach(entry => {
+                const subject = entry.querySelector('.subject').value;
+                const grade = entry.querySelector('.grade').value;
+                results.push({ subject, grade });
+            });
+        
+            if (id) {
+                // Update existing student
+                students[id].name = name;
+                students[id].results = results;
+                alert('Student updated successfully!');
+            } else {
+                // Add new student
+                const newId = Date.now().toString();
+                students[newId] = { name, results };
+                alert('Student added successfully!');
+            }
+        
+            // Clear form and refresh data
+            studentForm.reset();
+            document.getElementById('studentId').value = '';
+            refreshStudentSelect();
+            refreshStudentTable();
+        
+            // Save to local storage
+            saveStudentsToLocalStorage();
+        });
+        
+        // Edit student
+        function editStudent(id) {
+            const student = students[id];
+            document.getElementById('studentId').value = id;
+            document.getElementById('studentName').value = student.name;
+        
+            // Clear existing subjects
+            const subjectContainer = document.getElementById('subject-container');
+            subjectContainer.innerHTML = '';
+        
+            student.results.forEach(result => {
+                const subjectEntry = document.createElement('div');
+                subjectEntry.classList.add('subject-entry');
+                subjectEntry.innerHTML = `
+                    <label for="subject">Subject:</label>
+                    <input type="text" class="subject" value="${result.subject}" required>
+                    <label for="grade">Grade:</label>
+                    <input type="text" class="grade" value="${result.grade}" required>
+                    <button type="button" class="remove-subject" onclick="removeSubject(this)">Remove Subject</button>
+                `;
+                subjectContainer.appendChild(subjectEntry);
+            });
+        }
+        
+        // Delete student
+        function deleteStudent(id) {
+            delete students[id];
+            refreshStudentSelect();
+            refreshStudentTable();
+            alert('Student deleted successfully!');
+        
+            // Save to local storage
+            saveStudentsToLocalStorage();
+        }
+        
+        // Filter students
+        function filterStudents() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const rows = studentTableBody.querySelectorAll('tr');
+        
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                if (name.includes(searchInput)) {
+                    row.style.display = '';
                 } else {
-                    card.style.display = 'none';
+                    row.style.display = 'none';
                 }
             });
+        }
+        
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('dark-mode');
+            const mainContent = document.querySelector('.main-content');
+            mainContent.classList.toggle('dark-mode');
+            this.textContent = this.textContent.includes('Enable') ? 'Disable Dark Mode' : 'Enable Dark Mode';
         });
+        
+        // Initial setup
+        refreshStudentSelect();
+        refreshStudentTable();
+        
     </script>
 </body>
+
 </html>

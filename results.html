@@ -22,19 +22,55 @@
             background-color: #343a40;
             display: flex;
             justify-content: center;
-            padding: 10px 0;
+            padding: 15px 0;
         }
         nav a {
             color: white;
-            padding: 14px 20px;
+            padding: 12px 20px;
             text-decoration: none;
             text-transform: uppercase;
-            font-weight: bold;
+            font-weight: 600;
             transition: background-color 0.3s ease;
+            margin: 0 10px;
         }
         nav a:hover {
-            background-color: #0056b3;
+            background-color: #495057;
+            border-radius: 5px;
         }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            color: #333;
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f8f9fa;
+        }
+        .admin-btn {
+            background-color: #dc3545;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 12px 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .admin-btn:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
         /* Table Styles */
         main {
             margin: 20px;
@@ -88,10 +124,16 @@
     <!-- Navigation Bar -->
     <nav>
         <a href="index.html">Home</a>
-        
-        <a href="./contact.html">Contact</a>
-        <a href="./about.html">About</a>
-        <a href="admin.html" class="btn" style="background-color: #28a745; color: white;">Admin Page</a>
+        <a href="results.html">View Student Results</a>
+        <!-- <div class="dropdown">
+            <a href="#">Features</a>
+            <div class="dropdown-content">
+                <!-- <a href="profile.html">Manage Student Profiles</a> -->
+            </div> -->
+        </div>
+        <a href="./contact.html">Contact Us</a>
+        <a href="./about.html">About Us</a>
+        <a href="dashboard.html" class="admin-btn">Admin Dashboard</a>
     </nav>
 
     <!-- Main Section -->
@@ -102,47 +144,13 @@
                 <tr>
                     <th>Student ID</th>
                     <th>Name</th>
-                    <th>Course</th>
+                    <th>Subject</th>
                     <th>Grade</th>
                     <th>Remarks</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1001</td>
-                    <td>John Doe</td>
-                    <td>Mathematics</td>
-                    <td>A</td>
-                    <td>Excellent</td>
-                </tr>
-                <tr>
-                    <td>1002</td>
-                    <td>Jane Smith</td>
-                    <td>Physics</td>
-                    <td>B+</td>
-                    <td>Good</td>
-                </tr>
-                <tr>
-                    <td>1003</td>
-                    <td>Mike Johnson</td>
-                    <td>Chemistry</td>
-                    <td>A-</td>
-                    <td>Very Good</td>
-                </tr>
-                <tr>
-                    <td>1004</td>
-                    <td>Emily Davis</td>
-                    <td>Biology</td>
-                    <td>B</td>
-                    <td>Average</td>
-                </tr>
-                <tr>
-                    <td>1005</td>
-                    <td>Chris Lee</td>
-                    <td>History</td>
-                    <td>A+</td>
-                    <td>Outstanding</td>
-                </tr>
+            <tbody id="student-results">
+                <!-- Dynamic content will be inserted here -->
             </tbody>
         </table>
     </main>
@@ -154,5 +162,59 @@
             <a href="#">Terms of Service</a>
         </p>
     </footer>
+
+    <script>
+        // Function to get students data from local storage or use dummy data
+        function getStudents() {
+            // Get student data from local storage
+            const studentsData = localStorage.getItem('students');
+            if (studentsData) {
+                return JSON.parse(studentsData);
+            } else {
+                // Return dummy data if local storage is empty
+                return {
+                    "1": {
+                        name: "John Doe",
+                        results: [
+                            { subject: "Mathematics", grade: "A" },
+                            { subject: "Science", grade: "B+" }
+                        ]
+                    },
+                    "2": {
+                        name: "Jane Smith",
+                        results: [
+                            { subject: "English", grade: "B" },
+                            { subject: "History", grade: "C" }
+                        ]
+                    }
+                };
+            }
+        }
+
+        // Function to populate the student results table
+        function populateResults() {
+            const students = getStudents(); // Fetch students data
+            const resultsContainer = document.getElementById('student-results');
+            resultsContainer.innerHTML = ''; // Clear existing data
+
+            Object.keys(students).forEach(id => {
+                const student = students[id];
+                student.results.forEach(result => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${id}</td>
+                        <td>${student.name}</td>
+                        <td>${result.subject}</td>
+                        <td>${result.grade}</td>
+                        <td>${result.grade === 'A' ? 'Excellent' : result.grade === 'B+' ? 'Good' : 'Average'}</td>
+                    `;
+                    resultsContainer.appendChild(row);
+                });
+            });
+        }
+
+        // Populate the results on page load
+        window.onload = populateResults;
+    </script>
 </body>
 </html>

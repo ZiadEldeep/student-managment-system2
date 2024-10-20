@@ -4,41 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Result Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
             color: #333;
         }
         header {
             background-color: #007bff;
             color: white;
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 5px solid #0056b3;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 600;
         }
         nav {
             background-color: #343a40;
             display: flex;
             justify-content: center;
-            padding: 10px 0;
+            padding: 15px 0;
         }
         nav a {
             color: white;
-            padding: 14px 20px;
+            padding: 12px 20px;
             text-decoration: none;
             text-transform: uppercase;
-            font-weight: bold;
+            font-weight: 600;
             transition: background-color 0.3s ease;
+            margin: 0 10px;
         }
         nav a:hover {
-            background-color: #0056b3;
-        }
-        /* Dropdown menu styles */
-        .dropdown {
-            position: relative;
-            display: inline-block;
+            background-color: #495057;
+            border-radius: 5px;
         }
         .dropdown-content {
             display: none;
@@ -46,36 +50,32 @@
             background-color: white;
             color: #333;
             min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            overflow: hidden;
-        }
-        .dropdown-content a {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease;
-        }
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
         }
         .dropdown:hover .dropdown-content {
             display: block;
         }
-        /* Special style for Admin button */
+        .dropdown-content a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f8f9fa;
+        }
         .admin-btn {
-            background-color: #dc3545; /* Red background */
-            color: white; /* White text */
-            font-weight: bold; /* Bold text */
-            border-radius: 5px; /* Rounded corners */
-            padding: 12px 20px; /* Padding */
-            transition: background-color 0.3s ease, transform 0.3s ease; /* Transition effects */
+            background-color: #dc3545;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 12px 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .admin-btn:hover {
-            background-color: #c82333; /* Darker red on hover */
-            transform: scale(1.05); /* Slightly enlarge */
+            background-color: #c82333;
+            transform: scale(1.05);
         }
 
         /* Main Section */
@@ -83,45 +83,45 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 50px;
+            margin: 60px 0;
             padding: 0 20px;
         }
         h1 {
             font-size: 28px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             font-weight: bold;
         }
         p {
             font-size: 18px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         .btn {
-            padding: 12px 24px;
+            padding: 14px 30px;
             background-color: #007bff;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
-            margin: 10px;
             transition: background-color 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .btn:hover {
             background-color: #0056b3;
         }
         .features {
-            margin: 50px 0;
             display: flex;
             justify-content: space-around;
             width: 80%;
             flex-wrap: wrap;
+            margin: 50px 0;
         }
         .feature {
             background-color: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             width: 30%;
             min-width: 250px;
             margin: 10px;
@@ -133,7 +133,7 @@
         }
         .feature h3 {
             font-size: 22px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #007bff;
         }
         .feature p {
@@ -144,10 +144,9 @@
             background-color: #343a40;
             color: white;
             text-align: center;
-            padding: 20px;
+            padding: 30px 20px;
             margin-top: 50px;
             font-size: 14px;
-            position: relative;
         }
         footer a {
             color: #007bff;
@@ -156,7 +155,6 @@
         footer a:hover {
             text-decoration: underline;
         }
-        /* Responsive design */
         @media (max-width: 768px) {
             .features {
                 flex-direction: column;
@@ -177,17 +175,17 @@
 
     <!-- Navigation Bar -->
     <nav>
-        <a href="#">Home</a>
-        <div class="dropdown">
+        <a href="index.html">Home</a>
+        <a href="results.html">View Student Results</a>
+        <!-- <div class="dropdown">
             <a href="#">Features</a>
             <div class="dropdown-content">
-                <a href="results.html">View Student Results</a>
-                <a href="profile.html">Manage Student Profiles</a>
-            </div>
+                <!-- <a href="profile.html">Manage Student Profiles</a> -->
+            </div> -->
         </div>
         <a href="./contact.html">Contact Us</a>
         <a href="./about.html">About Us</a>
-        <a href="admin.html" class="admin-btn">Admin Dashboard</a> <!-- Admin button with special style -->
+        <a href="dashboard.html" class="admin-btn">Admin Dashboard</a>
     </nav>
 
     <!-- Main Section -->
