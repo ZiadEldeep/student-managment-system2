@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Student Result Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
     <style>
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #343a40;
+            color: #f8f9fa;
         }
         header {
             background-color: #007bff;
@@ -18,11 +24,17 @@
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        body.dark-mode header {
+            background-color: #0056b3;
+        }
         nav {
             background-color: #343a40;
             display: flex;
             justify-content: center;
             padding: 15px 0;
+        }
+        body.dark-mode nav {
+            background-color: #495057;
         }
         nav a {
             color: white;
@@ -36,27 +48,6 @@
         nav a:hover {
             background-color: #495057;
             border-radius: 5px;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            color: #333;
-            min-width: 160px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropdown-content a {
-            color: #333;
-            padding: 10px;
-            text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #f8f9fa;
         }
         .admin-btn {
             background-color: #dc3545;
@@ -96,6 +87,9 @@
             width: 80%;
             max-width: 600px;
         }
+        body.dark-mode .contact-form {
+            background-color: #495057;
+        }
         .form-group {
             margin-bottom: 15px;
         }
@@ -110,6 +104,12 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+        }
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            border: 1px solid #ced4da;
+            background-color: #6c757d;
+            color: white;
         }
         .form-group textarea {
             resize: vertical;
@@ -137,6 +137,9 @@
             font-size: 14px;
             position: relative;
         }
+        body.dark-mode footer {
+            background-color: #495057;
+        }
         footer a {
             color: #007bff;
             text-decoration: none;
@@ -155,15 +158,12 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="results.html">View Student Results</a>
-        <!-- <div class="dropdown">
-            <a href="#">Features</a>
-            <div class="dropdown-content">
-                <!-- <a href="profile.html">Manage Student Profiles</a> -->
-            </div> -->
-        </div>
         <a href="./contact.html">Contact Us</a>
         <a href="./about.html">About Us</a>
         <a href="dashboard.html" class="admin-btn">Admin Dashboard</a>
+        <button id="darkModeToggle" style="margin-left: 10px; padding: 10px; background: none; border: none; color: white; font-weight: bold; cursor: pointer;">
+            <i id="toggleIcon" class="fas fa-sun"></i> <!-- Initial icon -->
+        </button>
     </nav>
 
     <!-- Main Section -->
@@ -195,5 +195,23 @@
             <a href="#">Terms of Service</a>
         </p>
     </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            // Change icon based on dark mode state
+            if (document.body.classList.contains('dark-mode')) {
+                toggleIcon.classList.remove('fas', 'fa-sun');
+                toggleIcon.classList.add('fas', 'fa-moon');
+            } else {
+                toggleIcon.classList.remove('fas', 'fa-moon');
+                toggleIcon.classList.add('fas', 'fa-sun');
+            }
+        });
+    </script>
 </body>
 </html>
