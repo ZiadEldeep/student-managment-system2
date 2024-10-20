@@ -29,6 +29,7 @@
             background-color: #343a40;
             display: flex;
             justify-content: center;
+            flex-wrap: wrap; /* Allow wrapping of items */
             padding: 15px 0;
         }
         nav a {
@@ -43,27 +44,6 @@
         nav a:hover {
             background-color: #495057;
             border-radius: 5px;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            color: #333;
-            min-width: 160px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropdown-content a {
-            color: #333;
-            padding: 10px;
-            text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #f8f9fa;
         }
         .admin-btn {
             background-color: #dc3545;
@@ -155,14 +135,39 @@
         footer a:hover {
             text-decoration: underline;
         }
+        @media (max-width: 1024px) {
+            .feature {
+                width: 45%; /* Two items per row */
+            }
+        }
         @media (max-width: 768px) {
+            nav {
+                flex-direction: column; /* Stack navigation items */
+            }
             .features {
-                flex-direction: column;
+                flex-direction: column; /* Stack features vertically */
                 align-items: center;
             }
             .feature {
-                width: 80%;
+                width: 80%; /* Full width for smaller screens */
                 margin-bottom: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 24px; /* Smaller title font */
+            }
+            nav a {
+                padding: 10px 15px; /* Smaller padding */
+            }
+            .btn {
+                padding: 12px 20px; /* Smaller button padding */
+            }
+            .feature h3 {
+                font-size: 20px; /* Smaller feature title */
+            }
+            .feature p {
+                font-size: 14px; /* Smaller feature text */
             }
         }
     </style>
@@ -177,12 +182,6 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="results.html">View Student Results</a>
-        <!-- <div class="dropdown">
-            <a href="#">Features</a>
-            <div class="dropdown-content">
-                <!-- <a href="profile.html">Manage Student Profiles</a> -->
-            </div> -->
-        </div>
         <a href="./contact.html">Contact Us</a>
         <a href="./about.html">About Us</a>
         <a href="dashboard.html" class="admin-btn">Admin Dashboard</a>

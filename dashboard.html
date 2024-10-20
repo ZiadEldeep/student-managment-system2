@@ -128,7 +128,8 @@
             margin-right: 10px;
         }
 
-        .filter-section select {
+        .filter-section select,
+        .filter-section input {
             padding: 5px;
             margin-right: 10px;
         }
@@ -186,6 +187,44 @@
 
             .result-summary div {
                 width: 100%;
+            }
+
+            .sidebar {
+                width: 200px; /* Decrease width on smaller screens */
+            }
+
+            .main-content {
+                padding: 10px; /* Adjust padding for smaller screens */
+            }
+
+            .filter-section {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-section select,
+            .filter-section input {
+                width: auto; /* Allow for auto-width on smaller screens */
+                margin: 5px 0; /* Adjust margin */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar h2 {
+                font-size: 20px; /* Adjust font size for very small screens */
+            }
+
+            .main-content h2 {
+                font-size: 24px; /* Adjust font size for very small screens */
+            }
+
+            .result-summary div {
+                padding: 15px; /* Reduce padding in summary cards */
+            }
+
+            .student-form button {
+                padding: 8px; /* Reduce button padding */
             }
         }
     </style>
@@ -269,187 +308,139 @@
         </table>
     </div>
 
-    <script>const students = JSON.parse(localStorage.getItem('students')) || {};
+    <script>
+        const students = JSON.parse(localStorage.getItem('students')) || {};
         let editingRow = null;
-        
+
         // Populate student options in the select dropdown
         const studentSelect = document.getElementById('student-select');
         const studentTableBody = document.querySelector('#studentTable tbody');
-        
+
         function saveStudentsToLocalStorage() {
             localStorage.setItem('students', JSON.stringify(students));
         }
-        
-        function refreshStudentSelect() {
+
+        function addStudentToTable(studentId, studentName) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${studentName}</td>
+                <td>${Object.keys(students[studentId].subjects).join(', ')}</td>
+                <td>
+                    <button onclick="editStudent('${studentId}')">Edit</button>
+                    <button onclick="deleteStudent('${studentId}')">Delete</button>
+                </td>
+            `;
+            studentTableBody.appendChild(row);
+        }
+
+        function loadStudents() {
             studentSelect.innerHTML = '<option value="" disabled selected>Select a student</option>';
-            Object.keys(students).forEach(id => {
-                const option = document.createElement('option');
-                option.value = id;
-                option.text = students[id].name;
-                studentSelect.appendChild(option);
-            });
-        }
-        
-        function refreshStudentTable() {
             studentTableBody.innerHTML = '';
-            Object.keys(students).forEach(id => {
-                const student = students[id];
-                const subjectsList = student.results.map(res => res.subject).join(', ');
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${student.name}</td>
-                    <td>${subjectsList || 'N/A'}</td>
-                    <td>
-                        <button onclick="editStudent(${id})">Edit</button>
-                        <button onclick="deleteStudent(${id})">Delete</button>
-                    </td>
-                `;
-                studentTableBody.appendChild(row);
-            });
-        }
-        
-        // Handle student selection
-        studentSelect.addEventListener('change', function () {
-            const studentId = this.value;
-            if (students[studentId]) {
-                const student = students[studentId];
-                document.getElementById('student-name').textContent = `Welcome, ${student.name}`;
-                displayResults(studentId);
+
+            for (const studentId in students) {
+                const studentName = students[studentId].name;
+                studentSelect.innerHTML += `<option value="${studentId}">${studentName}</option>`;
+                addStudentToTable(studentId, studentName);
             }
-        });
-        
-        function displayResults(studentId) {
-            const student = students[studentId];
-            const resultSummary = document.getElementById('result-summary');
-            resultSummary.innerHTML = '';
-            student.results.forEach(result => {
-                const summaryDiv = document.createElement('div');
-                summaryDiv.innerHTML = `<strong>${result.subject}:</strong> ${result.grade}`;
-                resultSummary.appendChild(summaryDiv);
+        }
+
+        // Function to filter students based on search input
+        function filterStudents() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const rows = studentTableBody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const studentName = row.children[0].textContent.toLowerCase();
+                row.style.display = studentName.includes(searchInput) ? '' : 'none';
             });
         }
-        
-        // Add another subject
+
         function addSubject() {
             const subjectContainer = document.getElementById('subject-container');
-            const subjectEntry = document.createElement('div');
-            subjectEntry.classList.add('subject-entry');
-            subjectEntry.innerHTML = `
+            const newSubject = document.createElement('div');
+            newSubject.classList.add('subject-entry');
+            newSubject.innerHTML = `
                 <label for="subject">Subject:</label>
                 <input type="text" class="subject" required>
                 <label for="grade">Grade:</label>
                 <input type="text" class="grade" required>
                 <button type="button" class="remove-subject" onclick="removeSubject(this)">Remove Subject</button>
             `;
-            subjectContainer.appendChild(subjectEntry);
+            subjectContainer.appendChild(newSubject);
         }
-        
-        // Remove subject entry
+
         function removeSubject(button) {
             button.parentElement.remove();
         }
-        
-        // Handle form submission
-        const studentForm = document.getElementById('studentForm');
-        studentForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const id = document.getElementById('studentId').value;
-            const name = document.getElementById('studentName').value;
-            const results = [];
-        
-            document.querySelectorAll('.subject-entry').forEach(entry => {
+
+        document.getElementById('studentForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const studentId = document.getElementById('studentId').value;
+            const studentName = document.getElementById('studentName').value;
+            const subjects = Array.from(document.querySelectorAll('.subject-entry')).map(entry => {
                 const subject = entry.querySelector('.subject').value;
                 const grade = entry.querySelector('.grade').value;
-                results.push({ subject, grade });
+                return { subject, grade };
             });
-        
-            if (id) {
-                // Update existing student
-                students[id].name = name;
-                students[id].results = results;
-                alert('Student updated successfully!');
+
+            if (studentId) {
+                // Edit student
+                students[studentId].name = studentName;
+                students[studentId].subjects = subjects.reduce((acc, curr) => {
+                    acc[curr.subject] = curr.grade;
+                    return acc;
+                }, {});
             } else {
                 // Add new student
-                const newId = Date.now().toString();
-                students[newId] = { name, results };
-                alert('Student added successfully!');
+                const newStudentId = Date.now().toString();
+                students[newStudentId] = { name: studentName, subjects: subjects.reduce((acc, curr) => {
+                    acc[curr.subject] = curr.grade;
+                    return acc;
+                }, {}) };
             }
-        
-            // Clear form and refresh data
-            studentForm.reset();
-            document.getElementById('studentId').value = '';
-            refreshStudentSelect();
-            refreshStudentTable();
-        
-            // Save to local storage
+
             saveStudentsToLocalStorage();
+            loadStudents();
+            document.getElementById('studentForm').reset();
         });
-        
-        // Edit student
-        function editStudent(id) {
-            const student = students[id];
-            document.getElementById('studentId').value = id;
+
+        function editStudent(studentId) {
+            const student = students[studentId];
+            document.getElementById('studentId').value = studentId;
             document.getElementById('studentName').value = student.name;
-        
-            // Clear existing subjects
+
             const subjectContainer = document.getElementById('subject-container');
             subjectContainer.innerHTML = '';
-        
-            student.results.forEach(result => {
-                const subjectEntry = document.createElement('div');
-                subjectEntry.classList.add('subject-entry');
-                subjectEntry.innerHTML = `
+            for (const subject in student.subjects) {
+                const newSubject = document.createElement('div');
+                newSubject.classList.add('subject-entry');
+                newSubject.innerHTML = `
                     <label for="subject">Subject:</label>
-                    <input type="text" class="subject" value="${result.subject}" required>
+                    <input type="text" class="subject" value="${subject}" required>
                     <label for="grade">Grade:</label>
-                    <input type="text" class="grade" value="${result.grade}" required>
+                    <input type="text" class="grade" value="${student.subjects[subject]}" required>
                     <button type="button" class="remove-subject" onclick="removeSubject(this)">Remove Subject</button>
                 `;
-                subjectContainer.appendChild(subjectEntry);
-            });
+                subjectContainer.appendChild(newSubject);
+            }
         }
-        
-        // Delete student
-        function deleteStudent(id) {
-            delete students[id];
-            refreshStudentSelect();
-            refreshStudentTable();
-            alert('Student deleted successfully!');
-        
-            // Save to local storage
+
+        function deleteStudent(studentId) {
+            delete students[studentId];
             saveStudentsToLocalStorage();
+            loadStudents();
         }
-        
-        // Filter students
-        function filterStudents() {
-            const searchInput = document.getElementById('search').value.toLowerCase();
-            const rows = studentTableBody.querySelectorAll('tr');
-        
-            rows.forEach(row => {
-                const name = row.cells[0].textContent.toLowerCase();
-                if (name.includes(searchInput)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-        
+
+        // Load students from local storage on page load
+        loadStudents();
+
         // Dark mode toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
-        darkModeToggle.addEventListener('click', function () {
+        darkModeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('dark-mode');
-            const mainContent = document.querySelector('.main-content');
-            mainContent.classList.toggle('dark-mode');
-            this.textContent = this.textContent.includes('Enable') ? 'Disable Dark Mode' : 'Enable Dark Mode';
+            document.querySelector('.sidebar').classList.toggle('dark-mode');
+            document.querySelector('.main-content').classList.toggle('dark-mode');
         });
-        
-        // Initial setup
-        refreshStudentSelect();
-        refreshStudentTable();
-        
     </script>
 </body>
 

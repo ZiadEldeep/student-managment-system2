@@ -6,10 +6,10 @@
     <title>Student Results</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Add this to your existing CSS styles */
         body {
             background-color: #f4f4f4;
             color: #333;
+            margin: 0; /* Ensure no margin for body */
         }
         header {
             background-color: #007bff;
@@ -21,6 +21,7 @@
         nav {
             background-color: #343a40;
             display: flex;
+            flex-wrap: wrap; /* Allow wrapping */
             justify-content: center;
             padding: 15px 0;
         }
@@ -36,27 +37,6 @@
         nav a:hover {
             background-color: #495057;
             border-radius: 5px;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            color: #333;
-            min-width: 160px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropdown-content a {
-            color: #333;
-            padding: 10px;
-            text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #f8f9fa;
         }
         .admin-btn {
             background-color: #dc3545;
@@ -83,6 +63,8 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            display: block; /* Change display to block for scrolling */
         }
         th, td {
             padding: 12px;
@@ -114,6 +96,23 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav a {
+                padding: 10px 15px; /* Adjust padding */
+                margin: 5px 0; /* Adjust margin for smaller screens */
+                flex: 1 1 auto; /* Allow links to grow and shrink */
+                text-align: center; /* Center-align links */
+            }
+            table {
+                display: block; /* Keep table as block for scrolling */
+                overflow-x: auto; /* Allow horizontal scroll */
+            }
+            th, td {
+                font-size: 14px; /* Adjust font size */
+            }
+        }
     </style>
 </head>
 <body>
@@ -125,12 +124,6 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="results.html">View Student Results</a>
-        <!-- <div class="dropdown">
-            <a href="#">Features</a>
-            <div class="dropdown-content">
-                <!-- <a href="profile.html">Manage Student Profiles</a> -->
-            </div> -->
-        </div>
         <a href="./contact.html">Contact Us</a>
         <a href="./about.html">About Us</a>
         <a href="dashboard.html" class="admin-btn">Admin Dashboard</a>
